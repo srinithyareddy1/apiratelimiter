@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiratelimiter
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apiratelimiter
+  template:
+    metadata:
+      labels:
+        app: apiratelimiter
+    spec:
+      containers:
+        - name: apiratelimiter
+          image: apiratelimiter
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
