@@ -32,5 +32,3 @@ jobs:
     - name: Push Docker Image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/apiratelimiter
 
-    - name: Deploy to Kubernetes
-      run: kubectl apply -f k8s/deployment.yml
