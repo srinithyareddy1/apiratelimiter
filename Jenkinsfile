@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "srinithyareddy1/apiratelimiter"
+        DOCKER_IMAGE = "srinithyareddy/apiratelimiter"
     }
 
     stages {
