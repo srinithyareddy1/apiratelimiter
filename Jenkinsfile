@@ -19,19 +19,22 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
-            steps {
+       stage('Docker Push') {
+           steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-cred',
-                    usernameVariable: 'USER',
-                    passwordVariable: 'PASS'
-                )]) {
-                    sh '''
-                    echo $PASS | docker login -u $USER --password-stdin
-                    docker push $DOCKER_IMAGE
-                    '''
-                }
-            }
+            credentialsId: 'dockerhub-cred',
+            usernameVariable: 'USER',
+            passwordVariable: 'PASS'
+        )]) {
+            sh '''
+            echo $PASS | docker login -u $USER --password-stdin
+            
+            docker push srinithyareddy/apiratelimiter || \
+            (sleep 10 && docker push srinithyareddy/apiratelimiter) || \
+            (sleep 20 && docker push srinithyareddy/apiratelimiter)
+            '''
         }
+    }
+}
     }
 }
