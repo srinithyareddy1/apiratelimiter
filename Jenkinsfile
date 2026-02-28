@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "srinithyareddy1/apiratelimiter"
+    }
+
     stages {
 
         stage('Build') {
@@ -11,15 +15,21 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t srinithyareddy1/apiratelimiter .'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Docker Push') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub-cred', variable: 'PASS')]) {
-                    sh 'echo $PASS | docker login -u srinithyareddy1 --password-stdin'
-                    sh 'docker push srinithyareddy1/apiratelimiter'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-cred',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+                    sh '''
+                    echo $PASS | docker login -u $USER --password-stdin
+                    docker push $DOCKER_IMAGE
+                    '''
                 }
             }
         }
